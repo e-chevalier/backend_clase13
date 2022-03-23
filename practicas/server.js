@@ -1,12 +1,11 @@
 import express from 'express'
 import config from './config/index.js'
 import cors from 'cors'
+import { engine } from 'express-handlebars';
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import { serverRoutes } from './routes/index.js'
-import sessionFileStore from 'session-file-store'
 import MongoStore from 'connect-mongo'
-
 
 
 const PORT = config.port
@@ -14,19 +13,27 @@ const PORT = config.port
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use(express.static('static'))
+app.use(express.static('public'))
+app.use(express.static('node_modules/bootstrap/dist'))
 app.use(cookieParser())
 app.use(cors("*"))
 
-let FileStore = sessionFileStore(session)
 
-// app.use(session({
-//     store: new FileStore({path: '../sesiones', ttl:300, retries: 0}),
-//     secret: 'secreto',
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {maxAge: 10000}
-// }))
+
+// defino el motor de plantilla
+app.engine('.hbs', engine({
+    extname: ".hbs",
+    defaultLayout: 'index.hbs',
+    layoutDir: "views/layouts/",
+    partialsDir: "views/partials/"
+})
+)
+
+app.set('views', './views'); // especifica el directorio de vistas
+app.set('view engine', '.hbs'); // registra el motor de plantillas
+
+
+
 
 const advanceOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 
@@ -41,9 +48,13 @@ app.use(session({
         mongoOptions: advanceOptions
     }),
     secret: 'secreto',
-    resave: false,
     saveUninitialized: false,
-    cookie: {maxAge: 10000}
+    resave: true,
+    rolling: true,
+    cookie: { 
+        maxAge: 600 * 1000,
+        sameSite: true
+    }
 }))
 
 serverRoutes(app)

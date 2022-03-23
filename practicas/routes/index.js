@@ -1,13 +1,14 @@
-import { practica1Api } from "../components/practica1/index.js"
-import { practica2Api } from "../components/practica2/index.js"
-import { practica3Api } from "../components/practica3/index.js"
-
+import { registrationApi } from "../components/registration/index.js"
+import { loginApi } from '../components/login/index.js'
+import { logoutApi } from '../components/logout/index.js'
+import { mainApi } from "../components/main/index.js"
 
 export const serverRoutes = ( app ) => {
-    practica1Api(app)
-    practica2Api(app)
-    practica3Api(app)
-
+    registrationApi(app)
+    loginApi(app)
+    logoutApi(app)
+    mainApi(app)
+ 
     app.get("/", (req, res, next) => {
         res.send("Todo ok")
     })

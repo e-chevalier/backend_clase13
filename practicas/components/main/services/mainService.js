@@ -10,10 +10,12 @@ class Main {
 
             let user = users.find(user => user.name == req.session.username)
 
+            if ( req.session.counter >= 0 ) { 
+                req.session.counter++ 
+            }
 
-            console.log(user)
+            return { status: "OK", user: { ...user, counter: req.session.counter } }
 
-            return { status: "OK", user: user }
         } catch (error) {
             console.log(error);
         }

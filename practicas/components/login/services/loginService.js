@@ -27,7 +27,7 @@ class Login {
                     req.session.counter++
 
                 } else {
-                    req.session.counter = 1
+                    req.session.counter = 0
                     req.session.username = user.name
                 }
 

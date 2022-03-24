@@ -17,13 +17,7 @@ class Registration {
         try {
             let response = await registrationService.postRegistration(req)
 
-            if ( response.status == 'OK') {
-                res.status(200).redirect('/api/login')
-            } else {
-                console.log(response.error)
-                res.status(400).redirect('/api/registration')
-            }
-            
+            res.status(200).redirect('/api/login') 
 
         } catch (error) {
             console.log(error)

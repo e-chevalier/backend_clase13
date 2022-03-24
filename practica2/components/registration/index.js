@@ -1,12 +1,12 @@
 import express from 'express'
 import { registrationController } from './controllers/registrationController.js'
 
-export const registrationApi = (app) => {
+export const registrationApi = (app, passport) => {
 
     let router = express.Router()
     app.use('/api/registration', router)
 
     router.get('/', registrationController.getRegistration)
-    router.post('/', registrationController.postRegistration)
+    router.post('/', passport.authenticate('signup', { failureRedirect: '/api/login' }), registrationController.postRegistration)
 
 }

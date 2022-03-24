@@ -15,17 +15,9 @@ class Registration {
     async postRegistration(req) {
         try {
             console.log(`registration post`)
-            let response = {}
-            
-            const { name, email, password } = req.body
-
-            if( name && email && password) {
-                usersContainer.save({name: name, email: email, password: password})
-                usersMemory.save({name: name, email: email, password: password})
-                response = {status: 'OK'}
-            } else {
-                response = {status: 'BAD', error: `Missing value from register form => name: ${name}, email:${email}, password:${password}`}
-            }
+            let response = {status: 'OK'}
+           
+            console.log(req.user)
 
             return response
             

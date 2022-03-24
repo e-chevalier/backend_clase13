@@ -5,8 +5,9 @@ class Main {
 
     async getMain(req, res, next) {
         try {
-            let {status, user} = await mainService.getMain(req)
-            res.render('main', {name: user.name, email: user.email, password: user.password, counter: user.counter} )
+            let {status, data} = await mainService.getMain(req)
+            console.log(req.data)
+            res.render('main', data )
             
         } catch (error) {
             console.log(error);

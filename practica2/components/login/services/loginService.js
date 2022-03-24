@@ -5,7 +5,17 @@ class Login {
     async getLogin(req) {
 
         try {
-            return { status: "OK" }
+            let response = {}
+
+            if (req.isAuthenticated()) {
+                console.log("Usuario logueado")
+                response = { status: "LOGGEDIN"}
+            } else {
+                console.log("Usuario no logueado")
+                response = { status: "NOTLOGGEDIN" }
+            }
+            return response
+
         } catch (error) {
             console.log(error);
         }
@@ -15,27 +25,8 @@ class Login {
     async postLogin(req) {
 
         try {
-            const { name, password } = req.body
-            let response = {}
-
-            const users = await usersMemory.getAll()
-            const user = users.find(user => user.name == name)
-
-            if (user && user.password  == password ) {
-
-                if (req.session.counter) {
-                    req.session.counter++
-
-                } else {
-                    req.session.counter = 0
-                    req.session.username = user.name
-                }
-
-                response = { status: "OK" }
-
-            } else {
-                response = { status: "BAD" }
-            }
+            
+            let response = {status: 'OK', user: req.user}
 
             return response
 

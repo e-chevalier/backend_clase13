@@ -5,8 +5,8 @@
 
     <form action="/api/registration" method="post">
         <div class="mb-3">
-            <label for="name" class="form-label">Ingrese su nombre</label>
-            <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelp">
+            <label for="username" class="form-label">Ingrese Nombre de usuario</label>
+            <input type="text" class="form-control" name="username" id="username" aria-describedby="usernameHelp">
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Ingrese contraseña</label>
@@ -15,6 +15,14 @@
         <div class="mb-3">
             <label for="email" class="form-label">Ingrese su email</label>
             <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="firstname" class="form-label">Ingrese su Nombre</label>
+            <input type="text" class="form-control" name="firstname" id="firstname" aria-describedby="firstnameHelp">
+        </div>
+        <div class="mb-3">
+            <label for="lastname" class="form-label">Ingrese su Apellido</label>
+            <input type="text" class="form-control" name="lastname" id="lastname" aria-describedby="lastnameHelp">
         </div>
         <button id="btnFormLogin_submit" type="submit" class="btn btn-primary">Enviar</button>
     </form>

@@ -1,27 +1,27 @@
 [
   {
-    "name": "Pedro",
+    "username": "Pedro",
     "password": "ledzeppelin",
     "email": "pedro@gmail.com",
     "id": 1,
     "timestamp": 1648064788594
   },
   {
-    "name": "Juan",
+    "username": "Juan",
     "password": "hendrix",
     "email": "juan@gmail.com",
     "id": 2,
     "timestamp": 1648064788594
   },
   {
-    "name": "Ana",
+    "username": "Ana",
     "email": "ana@hotmail.com.ar",
     "password": "123456",
     "id": 3,
     "timestamp": 1648064788594
   },
   {
-    "name": "Esteban",
+    "username": "Esteban",
     "email": "echevalier.dev@gmail.com",
     "password": "123456",
     "id": 4,

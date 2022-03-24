@@ -6,15 +6,13 @@ class Main {
 
         try {
 
-            let users = await usersMemory.getAll()
-
-            let user = users.find(user => user.name == req.session.username)
-
-            if ( req.session.counter >= 0 ) { 
-                req.session.counter++ 
+            if (req.session.counter) {
+                req.session.counter++
+            } else {
+                req.session.counter = 1
             }
-
-            return { status: "OK", user: { ...user, counter: req.session.counter } }
+   
+            return { status: "OK", data: { ...req.user, counter: req.session.counter } }
 
         } catch (error) {
             console.log(error);

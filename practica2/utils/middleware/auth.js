@@ -1,9 +1,9 @@
 const auth = (req, res, next) => {
 
-    if( req.session.username ) {
-        return next()
+    if( req.isAuthenticated()) {
+        next()
     } else {
-        return res.status(401).redirect('/api/login')
+        res.redirect('/api/login')
     }
 
 }

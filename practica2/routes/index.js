@@ -10,7 +10,7 @@ export const serverRoutes = ( app, passport ) => {
     mainApi(app)
  
     app.get("/", (req, res, next) => {
-        res.send("Todo ok")
+        res.redirect('/api/login')
     })
     /**
     * Undefined endpoint

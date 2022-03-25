@@ -1,0 +1,32 @@
+{{!-- form.hbs --}}
+
+<div class="container bg-light mb-3">
+    <h3 class="fs-2 text-primary my-4 py-4"> Login de usuario</h3>
+
+    {{#if error }}
+    <p class="p-3 my-2 bg-warning text-dark">Error en el usuario o la contraseña.</p>
+    {{/if}}
+
+    <form action="/api/login" method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">Ingrese su nombre</label>
+            <input type="text" class="form-control" name="username" id="username" aria-describedby="usernameHelp">
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Ingrese su contraseña</label>
+            <input type="password" class="form-control" name="password" id="password" aria-describedby="passwordHelp">
+        </div>
+
+        <div class="d-grid gap-2 d-md-block">
+            <button id="btnFormLogin_submit" type="submit" class="btn btn-primary mb-2">Enviar</button>
+            <p class="fs-5">¿Aun no tenes una cuenta?</p>
+            <a class="btn btn-primary" href="/api/registration" role="button">Registrarse</a>
+        </div>
+
+
+    </form>
+
+
+
+</div>

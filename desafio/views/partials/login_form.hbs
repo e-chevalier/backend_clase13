@@ -1,0 +1,13 @@
+{{!-- form.hbs --}}
+
+<div class="container bg-light mb-3">
+    <h3 class="fs-2 text-primary my-4 py-4"> Login de usuario</h3>
+
+    <form action="/api/login" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Ingrese su nombre</label>
+            <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelp">
+        </div>
+        <button id="btnFormLogin_submit" type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>

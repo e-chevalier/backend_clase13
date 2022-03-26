@@ -59,9 +59,9 @@ app.use(session({
     rolling: true,
     cookie: {
         httpOnly: false,
-        secure: false,
+        secure: true,
         maxAge: 600 * 1000,
-        sameSite: true
+        sameSite: 'none'
     }
 }))
 
@@ -70,7 +70,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use('facebook', new FacebookStrategy({
+passport.use(new FacebookStrategy({
     clientID: config.facebookid,
     clientSecret: config.facebooksecret,
     callbackURL: "https://localhost:8080/auth/facebook/callback",

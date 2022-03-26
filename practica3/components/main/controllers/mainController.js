@@ -5,9 +5,11 @@ class Main {
 
     async getMain(req, res, next) {
         try {
-            let {status, data} = await mainService.getMain(req)
-            console.log(req.data)
-            res.render('main', data )
+            //let {status, data} = await mainService.getMain(req)
+            //let response = await mainService.getMain(req)
+            console.log("Before render main")
+            res.render('main', { ...req.user })
+            // , data )
             
         } catch (error) {
             console.log(error);

@@ -14,6 +14,7 @@ class Login {
                 console.log("Usuario no logueado")
                 response = { status: "NOTLOGGEDIN" }
             }
+
             return response
 
         } catch (error) {

@@ -8,8 +8,10 @@ import { serverRoutes } from './routes/index.js'
 import MongoStore from 'connect-mongo'
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
-import bCrypt from 'bcrypt'
 import * as User from './models/users.js'
+import https from 'https'
+import fs from 'fs'
+
 
 
 const PORT = config.port
@@ -21,6 +23,7 @@ app.use(express.static('public'))
 app.use(express.static('node_modules/bootstrap/dist'))
 app.use(cookieParser())
 app.use(cors("*"))
+
 
 
 // defino el motor de plantilla
@@ -52,7 +55,7 @@ app.use(session({
     }),
     secret: 'secreto',
     saveUninitialized: false,
-    resave: true,
+    resave: false,
     rolling: true,
     cookie: {
         httpOnly: false,
@@ -64,115 +67,77 @@ app.use(session({
 
 // CONFIG PASSPORT
 
-passport.use('facebook', new FacebookStrategy({
-    clientID: config.facebookid,
-    clientSecret: config.facebooksecret,
-    callbackURL: "/auth/facebook/callback"
-    },
-    (accessToken, refreshToken, profile, done) => {
-
-        User.users.findOneAndUpdate({id: profile.id}, {new: true, upsert: true, lean: true}, (err, user) => {
-            if (err) {
-                console.log("Error in login FacebookStrategy")
-                return done(err)
-            }
-            return done(null, user)
-        })
-
-    })
-)
-
-// passport.use('login', new LocalStrategy(
-//     (username, password, done) => {
-//         User.users.findOne({ username: username }, (err, user) => {
-
-//             if (err) {
-//                 console.log("Error in login LocalStrategy")
-//                 return done(err)
-//             }
-
-//             if (!user) {
-//                 console.log("User Not Found with username: " + username);
-//                 return done(null, false)
-//             }
-
-//             if (!isValidPassword(user, password)) {
-//                 console.log("Invalid Password");
-//                 return done(null, false)
-//             }
-
-//             return done(null, user)
-//         })
-//     })
-// )
-
-// passport.use('signup', new LocalStrategy(
-//     { passReqToCallback: true },
-//     (req, username, password, done) => {
-//         User.users.findOne({ username: username }, (err, user) => {
-
-//             if (err) {
-//                 console.log("Error en signup LocalStrategy " + err);
-//                 return done(err)
-//             }
-
-//             if (user) {
-//                 console.log('User already exists');
-//                 return done(null, false)
-//             }
-
-//             const newUser = {
-//                 username: username,
-//                 password: createHash(password),
-//                 email: req.body.email,
-//                 firstname: req.body.firstname,
-//                 lastname: req.body.lastname,
-//             }
-
-//             User.users.create(newUser, (err, userWithId) => {
-//                 if (err) {
-//                     console.log('Error in Saving user: ' + err);
-//                     return done(err);
-//                 }
-//                 console.log(user)
-//                 console.log('User Registration succesful');
-//                 return done(null, userWithId);
-//             });
-//         })
-//     })
-// )
-
-
-// const createHash = (password) => {
-//     return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-// }
-
-
-// const isValidPassword = (user, password) => {
-//     return bCrypt.compareSync(password, user.password);
-// }
-
+// Passport middlewares
 passport.serializeUser((user, done) => {
+    console.log("serializeUser");
     done(null, user._id)
 })
 
 passport.deserializeUser((id, done) => {
-    User.users.findById(id, done).lean()
+    console.log("deserializeUser");
+    console.log(id)
+    User.users.findById({ _id: id }, done).lean()
 });
 
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+passport.use('facebook', new FacebookStrategy({
+    clientID: config.facebookid,
+    clientSecret: config.facebooksecret,
+    callbackURL: "https://localhost:8080/auth/facebook/callback",
+    profileFields: ['id', 'emails', 'displayName', 'picture']
+},
+    (accessToken, refreshToken, profile, done) => {
+
+        process.nextTick(() => {
+
+            const newUser = {
+                username: profile.displayName,
+                email: "No tiene.",
+                password: "No tiene",
+                firstname: profile.displayName.split(' ')[0],
+                lastname: profile.displayName.split(' ')[1],
+                photo: profile.photos[0].value
+            }
+
+            User.users.findOneAndUpdate({ id: profile.id }, newUser, { new: true, upsert: true, lean: true }, (err, user) => {
+                if (err) {
+                    console.log("Error in login FacebookStrategy")
+                    return done(err)
+                }
+
+                return done(null, user)
+            })
+
+        })
+
+    })
+)
+
+
+
 serverRoutes(app, passport)
 
-const server = app.listen(PORT, (err) => {
+
+// SERVER HTTPS
+
+const credentials = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+};
+
+
+const httpsServer = https.createServer(credentials, app);
+
+const server = httpsServer.listen(PORT, 'localhost', (err) => {
     if (err) {
         console.log("Error while starting server")
     } else {
-        console.log(`Servidor http escuchando en el puerto ${server.address().port}
-                 Open link to http://127.0.0.1:${server.address().port}`)
+        console.log(`Servidor https escuchando en el puerto ${server.address().port}
+                 Open link to https://localhost:${server.address().port}`)
     }
 })
-
 
 server.on('error', error => console.log(`Error en servidor ${error}`))

@@ -3,6 +3,7 @@ import { loginApi } from '../components/login/index.js'
 import { logoutApi } from '../components/logout/index.js'
 import { mainApi } from "../components/main/index.js"
 import { authFacebookApi } from "../components/authFacebook/index.js"
+import { failureApi } from "../components/failure/index.js"
 
 export const serverRoutes = ( app, passport ) => {
     authFacebookApi(app, passport)
@@ -10,9 +11,10 @@ export const serverRoutes = ( app, passport ) => {
     loginApi(app, passport)
     logoutApi(app)
     mainApi(app)
+    failureApi(app)
  
     app.get("/", (req, res, next) => {
-        res.redirect('/api/login')
+        res.send('Todo OK!')
     })
     /**
     * Undefined endpoint

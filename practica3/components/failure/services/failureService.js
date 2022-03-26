@@ -1,11 +1,10 @@
 
-class AuthFacebook {
+class Failure {
 
-    async redirect() {
+    async getFailure(req) {
         try {
-            console.log(`test`)
+            console.log(`getFailure`)
             // LOGIC HERE
-
             return { status: "OK" }
         } catch (error) {
             console.log(error)
@@ -14,4 +13,4 @@ class AuthFacebook {
 
 }
 
-export let authFacebookService = new AuthFacebook()
+export let failureService = new Failure()

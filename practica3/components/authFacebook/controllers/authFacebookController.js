@@ -5,7 +5,8 @@ class AuthFacebook {
         try {
             let response = await authFacebookService.redirect()
             console.log(req.user)
-            res.render('main', {...req.user})
+            res.redirect('/api/main')
+            
         } catch (error) {
             console.log(error)
         }

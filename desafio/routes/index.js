@@ -2,17 +2,24 @@ import { viewOneApi } from '../components/viewOne/index.js'
 import { viewProductsFakerApi } from '../components/viewProductsFaker/index.js'
 import { loginApi } from '../components/login/index.js'
 import { logoutApi } from '../components/logout/index.js'
+import { registrationApi } from "../components/registration/index.js"
+import { authFacebookApi } from "../components/authFacebook/index.js"
+import { failureApi } from "../components/failure/index.js"
 
-export const serverRoutes = ( app ) => {
+export const serverRoutes = ( app, passport ) => {
+    authFacebookApi(app, passport)
+    registrationApi(app, passport)
+    loginApi(app, passport)
+    logoutApi(app)
+    failureApi(app)
     viewOneApi(app)
     viewProductsFakerApi(app)
-    loginApi(app)
-    logoutApi(app)
 
     app.get("/", (req, res, next) => {
         //res.send("Todo ok")
         res.redirect('/api/login')
     })
+    
     /**
     * Undefined endpoint
     */

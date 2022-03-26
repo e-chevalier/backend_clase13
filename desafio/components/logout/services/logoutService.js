@@ -7,6 +7,9 @@ class Logout {
             let username = req.session.username
 
             if (req.session) {
+
+                req.logOut()
+                
                 req.session.destroy(error => {
                     if (!error) {
                         //res.json({ status: "Logout OK" })

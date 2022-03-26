@@ -41,8 +41,6 @@ const credentials = {
 };
 
 const httpsServer = https.createServer(credentials, app);
-//const httpServer = new HttpServer(app)
-
 
 const io = new IOServer(httpsServer)
 const PORT = config.port
@@ -114,13 +112,6 @@ const server = httpsServer.listen(PORT, 'localhost', (err) => {
 
 server.on('error', error => console.log(`Error en servidor ${error}`))
 
-
-// httpServer.listen(PORT, () => {
-//     console.log(`Servidor http escuchando en el puerto ${httpServer.address().port}
-//                  Open link to http://127.0.0.1:${httpServer.address().port}`)
-// })
-
-// httpServer.on("error", error => console.log(`Error en servidor ${error}`))
 
 
 

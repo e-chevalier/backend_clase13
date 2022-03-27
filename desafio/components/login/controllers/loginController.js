@@ -4,8 +4,15 @@ class Login {
 
     async getLogin(req, res, next) {
         try {
-            await loginService.getLogin(req)
-            res.render('login')
+            let {status} = await loginService.getLogin(req)
+
+            console.log(status);
+
+            if ( status == "LOGGEDIN" ) {
+                res.redirect('/api/viewOne')
+            } else {
+                res.render('login')
+            }
             
         } catch (error) {
             console.log(error);
@@ -15,14 +22,10 @@ class Login {
 
     async postLogin(req, res, next) {
         try {
-            const { status } = await loginService.postLogin(req)
+            const { user } = await loginService.postLogin(req)
 
-            if (status == 'OK') {
-                res.redirect('/api/viewOne')
-            } else {
-                res.redirect('/api/login')
-            }
-
+            res.redirect('/api/viewOne')
+            
         } catch (error) {
             console.log(error);
         }

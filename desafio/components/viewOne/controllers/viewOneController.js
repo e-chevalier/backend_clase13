@@ -4,8 +4,8 @@ class ViewOne {
     async getViewOne(req, res, next) {
         
         try {
-            await viewOneService.getViewOne()
-            res.render('main', { username: req.session.username })
+            let { status, data } = await viewOneService.getViewOne(req)
+            res.render('main', data )
         } catch (error) {
             console.log(error);
         }

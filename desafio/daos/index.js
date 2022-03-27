@@ -20,6 +20,11 @@ async function dynamicImport(container_type) {
     // PRODUCTS DAO MEMORY
     const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
 
+    // MONOGODB ATLAS CONNECTION
+    const { connectMongodbAtlas } = await import('../utils/mongodbAtlas/mongodbAtlas.js')
+    // Connnect to dabase
+    await connectMongodbAtlas()
+
 
     if (container_type.toUpperCase() === 'firestore'.toUpperCase()) {
         console.log("MESSAGES - Initializing container for Firestore")

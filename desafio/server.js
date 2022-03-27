@@ -14,9 +14,11 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { Strategy as LocalStrategy } from 'passport-local';
 import * as User from './models/users.js'
 import https from 'https'
 import fs from 'fs'
+import bCrypt from 'bcrypt'
 
 
 import { productsMemory, productsContainer, messagesMemory, messagesContainer } from './daos/index.js'
@@ -93,16 +95,17 @@ app.use(session({
 }))
 
 
-// CONFIG PASSPORT
+// CONFIG PASSPORT FACEBOOK
 
 app.use(passport.initialize());
 app.use(passport.session());
 
+console.log(fb_config.facebook_callback)
+
 passport.use(new FacebookStrategy({
     clientID: fb_config.facebookid,
     clientSecret: fb_config.facebooksecret,
-    callback: fb_config.facebook_callback,
-    //callbackURL: "https://localhost:8080/auth/facebook/callback",
+    callbackURL: fb_config.facebook_callback,
     profileFields: ['id', 'emails', 'displayName', 'picture']
 },
     (accessToken, refreshToken, profile, done) => {
@@ -143,6 +146,81 @@ passport.deserializeUser((id, done) => {
     console.log(id)
     User.users.findById({ _id: id }, done).lean()
 });
+
+// CONFIG PASSPORT LOCAL
+
+passport.use('login', new LocalStrategy(
+    (username, password, done) => {
+        User.users.findOne({ username: username }, (err, user) => {
+
+            if (err) {
+                console.log("Error in login LocalStrategy")
+                return done(err)
+            }
+
+            if (!user) {
+                console.log("User Not Found with username: " + username);
+                return done(null, false)
+            }
+
+            if (!isValidPassword(user, password)) {
+                console.log("Invalid Password");
+                return done(null, false)
+            }
+
+            return done(null, user)
+        })
+    })
+)
+
+passport.use('signup', new LocalStrategy(
+    { passReqToCallback: true },
+    (req, username, password, done) => {
+        User.users.findOne({ username: username }, (err, user) => {
+
+            if (err) {
+                console.log("Error en signup LocalStrategy " + err);
+                return done(err)
+            }
+
+            if (user) {
+                console.log('User already exists');
+                return done(null, false)
+            }
+
+            const newUser = {
+                id: req.body.username,
+                username: username,
+                password: createHash(password),
+                email: req.body.email,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                photo: "https://cdn3.iconfinder.com/data/icons/fruits-52/150/icon_fruit_morango-128.png"
+            }
+
+            User.users.create(newUser, (err, userWithId) => {
+                if (err) {
+                    console.log('Error in Saving user: ' + err);
+                    return done(err);
+                }
+                console.log(user)
+                console.log('User Registration succesful');
+                return done(null, userWithId);
+            });
+        })
+    })
+)
+
+
+const createHash = (password) => {
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+}
+
+
+const isValidPassword = (user, password) => {
+    return bCrypt.compareSync(password, user.password);
+}
+
 
 
 serverRoutes(app, passport)

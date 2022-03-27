@@ -8,6 +8,6 @@ export const authFacebookApi = (app, passport) => {
 
     router.get('/', passport.authenticate('facebook'))
     //router.get('/callback', passport.authenticate('facebook', { failureRedirect: '/api/failure'}), authFacebookController.redirect)
-    router.get('/callback', passport.authenticate('facebook', { successRedirect: '/api/main', failureRedirect: '/api/failure'}))
+    router.get('/callback', passport.authenticate('facebook', { successRedirect: '/api/viewOne', failureRedirect: '/api/failure'}))
 
 }

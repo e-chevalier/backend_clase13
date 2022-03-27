@@ -138,13 +138,10 @@ passport.use(new FacebookStrategy({
 
 // Passport middlewares
 passport.serializeUser((user, done) => {
-    console.log("serializeUser");
     done(null, user._id)
 })
 
 passport.deserializeUser((id, done) => {
-    console.log("deserializeUser");
-    console.log(id)
     User.users.findById({ _id: id }, done).lean()
 });
 

@@ -7,6 +7,8 @@ class Login {
             let {status} = await loginService.getLogin(req)
 
             console.log(status);
+            console.log("Status Code:")
+            console.log(req.statusCode)
 
             if ( status == "LOGGEDIN" ) {
                 res.redirect('/api/viewOne')

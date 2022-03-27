@@ -158,9 +158,9 @@ const checkStatusSubmitButton = () => {
     }
 }
 
-const logout = document.getElementById("logout")
-if( logout ) {
-    setTimeout(() => {window.location = "/api/login"}, 2000)
+const timeout = document.getElementById("timeout")
+if( timeout ) {
+    setTimeout(() => {window.location = "/api/login"}, 5000)
 }
 
 

@@ -7,6 +7,6 @@ export const viewOneApi = (app) => {
     let router = express.Router()
     app.use('/api/viewOne', router)
 
-    router.get('/', viewOneController.getViewOne)
+    router.get('/', auth, viewOneController.getViewOne)
 
 }

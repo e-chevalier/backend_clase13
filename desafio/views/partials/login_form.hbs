@@ -3,8 +3,8 @@
 <div class="container bg-light mb-3">
     <h3 class="fs-2 text-primary my-4 py-4"> Login de usuario</h3>
 
-    {{#if error }}
-    <p class="p-3 my-2 bg-warning text-dark">Error en el usuario o la contraseña.</p>
+    {{#if statusMessage }}
+    <p class="p-3 my-2 bg-warning text-dark">{{ statusMessage }}</p>
     {{/if}}
 
     <form action="/api/login" method="post">

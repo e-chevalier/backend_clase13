@@ -4,12 +4,12 @@ class Logout {
 
         try {
 
-            let username = req.session.username
+            let username = req.user.username
 
             if (req.session) {
 
                 req.logOut()
-                
+
                 req.session.destroy(error => {
                     if (!error) {
                         //res.json({ status: "Logout OK" })

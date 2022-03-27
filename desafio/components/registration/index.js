@@ -7,6 +7,7 @@ export const registrationApi = (app, passport) => {
     app.use('/api/registration', router)
 
     router.get('/', registrationController.getRegistration)
-    router.post('/', passport.authenticate('signup', { failureRedirect: '/api/login' }), registrationController.postRegistration)
+    router.post('/', passport.authenticate('signup', { failureRedirect: '/api/failure?status_code=900' }),
+        registrationController.postRegistration)
 
 }

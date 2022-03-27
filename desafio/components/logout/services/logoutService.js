@@ -4,7 +4,7 @@ class Logout {
 
         try {
 
-            let username = req.user.username
+            let username = req.user?.username
 
             if (req.session) {
 

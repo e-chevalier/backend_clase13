@@ -16,11 +16,14 @@ class Failure {
                 case '404':
                     message = 'El servidor no pudo encontrar el contenido solicitado.'
                     break
+                case '900':
+                    message = 'Fallo la registración del usuario.'
+                    break
                 default:
                     message = 'Error desconocido. El codigo de error no corresponde a ninguno de los conocidos.'
             }
 
-            return { status: "OK", message: message}
+            return { status: "OK", message: message }
         } catch (error) {
             console.log(error)
         }

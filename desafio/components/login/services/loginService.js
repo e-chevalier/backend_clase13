@@ -5,12 +5,14 @@ class Login {
         try {
             let response = {}
 
+            const {retry} = req.query
+
             if (req.isAuthenticated()) {
                 console.log("Usuario logueado")
-                response = { status: "LOGGEDIN"}
+                response = { status: "LOGGEDIN" }
             } else {
                 console.log("Usuario no logueado")
-                response = { status: "NOTLOGGEDIN" }
+                response = { status: "NOTLOGGEDIN", retry: retry }
             }
 
             return response

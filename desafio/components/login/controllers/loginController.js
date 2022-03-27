@@ -4,16 +4,12 @@ class Login {
 
     async getLogin(req, res, next) {
         try {
-            let {status} = await loginService.getLogin(req)
-
-            console.log(status);
-            console.log("Status Code:")
-            console.log(req.statusCode)
+            let {status, retry} = await loginService.getLogin(req)
 
             if ( status == "LOGGEDIN" ) {
                 res.redirect('/api/viewOne')
             } else {
-                res.render('login')
+                res.render('login', {retry: retry})
             }
             
         } catch (error) {

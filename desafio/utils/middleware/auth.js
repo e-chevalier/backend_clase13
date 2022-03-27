@@ -4,7 +4,6 @@ const auth = (req, res, next) => {
         return next()
     } else {
         return res.redirect('/api/failure?status_code=401');
-        //res.status(401).redirect('/api/login')
     }
 
 }

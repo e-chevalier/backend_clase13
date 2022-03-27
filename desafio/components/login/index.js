@@ -7,5 +7,5 @@ export const loginApi = (app, passport) => {
     app.use('/api/login', router)
 
     router.get('/', loginController.getLogin)
-    router.post('/', passport.authenticate('login', { failureRedirect: '/api/logout'}), loginController.postLogin)
+    router.post('/', passport.authenticate('login', { failureRedirect: '/api/login?retry=1'}), loginController.postLogin)
 }

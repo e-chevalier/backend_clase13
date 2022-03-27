@@ -19,6 +19,7 @@ import * as User from './models/users.js'
 import https from 'https'
 import fs from 'fs'
 import bCrypt from 'bcrypt'
+import faker from 'faker'
 
 
 import { productsMemory, productsContainer, messagesMemory, messagesContainer } from './daos/index.js'
@@ -151,6 +152,7 @@ passport.deserializeUser((id, done) => {
 
 passport.use('login', new LocalStrategy(
     (username, password, done) => {
+
         User.users.findOne({ username: username }, (err, user) => {
 
             if (err) {
@@ -170,6 +172,7 @@ passport.use('login', new LocalStrategy(
 
             return done(null, user)
         })
+
     })
 )
 
@@ -195,7 +198,8 @@ passport.use('signup', new LocalStrategy(
                 email: req.body.email,
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
-                photo: "https://cdn3.iconfinder.com/data/icons/fruits-52/150/icon_fruit_morango-128.png"
+                photo: faker.image.imageUrl(50, 50, 'people', false, true)
+                //photo: "https://cdn3.iconfinder.com/data/icons/fruits-52/150/icon_fruit_morango-128.png"
             }
 
             User.users.create(newUser, (err, userWithId) => {
